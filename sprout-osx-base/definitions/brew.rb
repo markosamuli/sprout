@@ -17,6 +17,7 @@ define :brew, :action => :install do
         only_if params[:only_if] if params[:only_if]
         not_if params[:not_if] if params[:not_if]
         user params[:user] || node['current_user']
+        environment "HOME" => node['sprout']['home']
         command "brew remove --force #{package} && brew install #{package} #{params[:options]}"
       end
     end
@@ -25,8 +26,8 @@ define :brew, :action => :install do
       execute "brew install #{package}" do
         only_if params[:only_if] if params[:only_if]
         not_if params[:not_if] if params[:not_if]
-
         user params[:user] || node['current_user']
+        environment "HOME" => node['sprout']['home']
         command "brew install #{package} #{params[:options]}"
       end
     end
@@ -35,6 +36,7 @@ define :brew, :action => :install do
       only_if params[:only_if] || "brew list | grep #{package}"
       not_if params[:not_if] if params[:not_if]
       user params[:user] || node['current_user']
+      environment "HOME" => node['sprout']['home']
       command "brew remove #{package}"
     end
   when :upgrade
@@ -42,6 +44,7 @@ define :brew, :action => :install do
       only_if params[:only_if] || "brew outdated | grep '^#{package}$'"
       not_if params[:not_if] if params[:not_if]
       user params[:user] || node['current_user']
+      environment "HOME" => node['sprout']['home']
       command "brew upgrade #{package}"
     end
   when :update
@@ -49,6 +52,7 @@ define :brew, :action => :install do
       only_if params[:only_if] if params[:only_if]
       not_if params[:not_if] if params[:not_if]
       user params[:user] || node['current_user']
+      environment "HOME" => node['sprout']['home']
       command "brew update"
     end
   end
